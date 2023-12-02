@@ -1,4 +1,4 @@
-import {View, Text, Pressable, TextInput, Button} from "react-native"
+import {View, Text, StyleSheet, TextInput, Button} from "react-native"
 import {LinearGradient} from "expo-linear-gradient";
 import React from "react";
 import {Formik} from "formik";
@@ -7,47 +7,56 @@ import LogoAnimate from "../assets/LogoAnimate";
 
 export const Login = () => {
     return (
-        <LinearGradient colors={[Colors.black, Colors.main]} style={{
+        <LinearGradient colors={[Colors.main, Colors.black]} style={{
             flex: 1
         }}>
-                <View style={{flex:1,position: 'absolute',
+                <View style={{
+                    flex:1,position: 'absolute',
                     top: 0, left: 0,
                     right: 0, bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center'}}>
-                    <Text style={{
-                        fontSize: 22,
-                        fontWeight: 'bold',
-                        marginVertical: 12,
-                        color: Colors.white,
-                        marginBottom: 10
-                    }}>
-                        Hi Welcome Back ! 👋
-                    </Text>
-                    <LogoAnimate></LogoAnimate>
+                    <LogoAnimate/>
                     <Formik
                         initialValues={{ email: '' }}
                         onSubmit={values => console.log(values)}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values }) => (
-                            <View style={{
-                                width: "100%",
-                                height: 48,
-                                borderColor: "black",
-                                borderWidth: 1,
-                                borderRadius: 8,
+                            <View  style={{
+                                width: "80%",
+                                height: "20%",
+                                marginTop: 50,
                                 alignItems: "center",
-                                justifyContent: "center",
-                                paddingLeft: 22
+                                justifyContent: "center"
                             }}>
-                                <TextInput
-                                    placeholder='Enter your password'
-                                    placeholderTextColor="black"
-                                    style={{
-                                        width: "100%"
-                                    }}
-                                />
 
+                                <View style={{ justifyContent: "flex-start",
+                                flexDirection:"column"}}>
+                                    <Text style={styles.titleInput}>
+                                        Login:
+                                    </Text>
+                                </View>
+                                <View style={styles.container}>
+                                    <TextInput
+                                        placeholder='Enter your login'
+                                        placeholderTextColor= {Colors.white}
+                                        style={styles.input}
+                                    />
+                                </View>
+                                <Text style={styles.titleInput}>
+                                    Password:
+                                </Text>
+                                <View style={styles.container}>
+                                    <TextInput
+                                        placeholder='Enter your password'
+                                        placeholderTextColor= {Colors.white}
+                                        style={styles.input}
+                                    />
+                            </View>
+                                <Button
+                                    title="Learn More"
+                                    color={Colors.main}
+                                />
                             </View>
                         )}
                     </Formik>
@@ -55,3 +64,25 @@ export const Login = () => {
         </LinearGradient>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        width: "100%",
+        height: 48,
+        borderColor: Colors.white,
+        borderWidth: 1,
+        borderRadius: 8,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    titleInput: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginVertical: 12,
+        color: Colors.white,
+        marginBottom: 10
+    },
+    input: {
+        color: Colors.white,
+        width: "100%"
+    }
+});
