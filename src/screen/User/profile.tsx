@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { Colors } from "../../constants/Colors";
 
-const profile = () => {
+const Profile = () => {
 
     const handleEditProfile = () => {
 
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default profile;
+export default Profile;
