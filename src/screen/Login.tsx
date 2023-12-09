@@ -1,11 +1,43 @@
 import {View, Text, StyleSheet, TextInput, Button} from "react-native"
 import {LinearGradient} from "expo-linear-gradient";
-import React from "react";
+import React, {useState} from "react";
 import {Formik} from "formik";
 import {Colors} from "../constants/Colors";
-import LogoAnimate from "../assets/LogoAnimate";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Plant from "../assets/Plant";
+import {useNavigation} from "@react-navigation/native";
 
 export const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errortext, setErrortext] = useState('');
+    const navigation = useNavigation();
+
+    const onPressLogin = async () => {
+        setErrortext('');
+        if (!email) {
+            alert('Please fill Email');
+            return;
+        }
+        if (!password) {
+            alert('Please fill Password');
+            return;
+        }
+        try {
+            const response = await axios.post(`http://192.168.31.88:8000/api/login`, {
+                email: email,
+                password: password
+            });
+            const auth = response.data.authorisation;
+            await AsyncStorage.setItem('jwtToken', auth.token);
+            // navigation.navigate('BottomTabNav');
+        } catch (error: any) {
+            console.log('error',error.response.data);
+            alert("An error has occurred");
+        }
+    };
+
     return (
         <LinearGradient colors={[Colors.main, Colors.black]} style={{
             flex: 1
@@ -16,7 +48,7 @@ export const Login = () => {
                     right: 0, bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center'}}>
-                    <LogoAnimate/>
+                    <Plant/>
                     <Formik
                         initialValues={{ email: '' }}
                         onSubmit={values => console.log(values)}
@@ -38,9 +70,10 @@ export const Login = () => {
                                 </View>
                                 <View style={styles.container}>
                                     <TextInput
-                                        placeholder='Enter your login'
+                                        placeholder='  Enter your email'
                                         placeholderTextColor= {Colors.white}
                                         style={styles.input}
+                                        onChangeText={(email) => setEmail(email)}
                                     />
                                 </View>
                                 <Text style={styles.titleInput}>
@@ -48,15 +81,20 @@ export const Login = () => {
                                 </Text>
                                 <View style={styles.container}>
                                     <TextInput
-                                        placeholder='Enter your password'
+                                        placeholder='  Enter your password'
                                         placeholderTextColor= {Colors.white}
                                         style={styles.input}
+                                        secureTextEntry={true}
+                                        onChangeText={(password) => setPassword(password)}
                                     />
                             </View>
+                                <View style={{marginTop: 23}}>
                                 <Button
-                                    title="Learn More"
+                                    onPress = {onPressLogin}
+                                    title="Login"
                                     color={Colors.main}
                                 />
+                                </View>
                             </View>
                         )}
                     </Formik>

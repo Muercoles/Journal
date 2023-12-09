@@ -1,4 +1,4 @@
-import { View, Text, Platform } from "react-native";
+import { View, Platform } from "react-native";
 import React from "react";
 import {
   SimpleLineIcons,
@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../constants/Colors";
 import Profile from "../screen/User/profile";
 import Schedule from "../screen/User/schedule";
+import {Home} from "../screen/Home/Home";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +32,7 @@ const BottomTabNav = () => {
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Home"
-        component={Profile}
+        component={Home}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
