@@ -1,9 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { Colors } from "../../constants/Colors";
+import {UserData} from "../Login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = () => {
+    const [userData, setUserData] = useState<UserData | null>(null);
 
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const userDataStorage = await AsyncStorage.getItem('userData');
+            if (userDataStorage !== null) {
+                const userData = JSON.parse(userDataStorage) as UserData;
+                setUserData(userData);
+                console.log('userData', userData);
+            }
+        };
+
+        fetchUserData();
+
+    }, []);
     const handleEditProfile = () => {
 
     };
@@ -24,7 +41,7 @@ const Profile = () => {
             />
             </TouchableOpacity>
 
-            
+
 
 
             <View style={styles.userInfo}>

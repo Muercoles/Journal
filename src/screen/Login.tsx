@@ -8,11 +8,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Plant from "../assets/Plant";
 import {useNavigation} from "@react-navigation/native";
 
+export interface UserData {
+    birthday: string;
+    classroom: string;
+    created_at: string;
+    email: string;
+    id: number;
+    image: string;
+    name: string;
+    phone: string;
+    surname: string;
+    updated_at: string;
+}
+
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errortext, setErrortext] = useState('');
     const navigation = useNavigation();
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     const onPressLogin = async () => {
         setErrortext('');
@@ -29,8 +43,12 @@ export const Login = () => {
                 email: email,
                 password: password
             });
+            const userData = response.data.user as UserData;
+            setUserData(userData);
             const auth = response.data.authorisation;
             await AsyncStorage.setItem('jwtToken', auth.token);
+            await AsyncStorage.setItem('userData', response.data.user);
+
             // navigation.navigate('BottomTabNav');
         } catch (error: any) {
             console.log('error',error.response.data);
@@ -73,6 +91,7 @@ export const Login = () => {
                                         placeholder='  Enter your email'
                                         placeholderTextColor= {Colors.white}
                                         style={styles.input}
+                                        value={email}
                                         onChangeText={(email) => setEmail(email)}
                                     />
                                 </View>
@@ -85,6 +104,7 @@ export const Login = () => {
                                         placeholderTextColor= {Colors.white}
                                         style={styles.input}
                                         secureTextEntry={true}
+                                        value={password}
                                         onChangeText={(password) => setPassword(password)}
                                     />
                             </View>

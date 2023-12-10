@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Login} from "./src/screen/Login";
 import BottomTabNav from './src/navigations/BottomTabNav';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import UserRegister from "./src/screen/Admin/userRegister";
+import userRegistration from "./src/screen/Admin/userRegister";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,8 +33,8 @@ export default function App() {
             <Stack.Navigator initialRouteName='BottomTabNav'>
                 {storedToken.length === 0  ? (
                 <Stack.Screen
-                    name='Login'
-                    component={Login}
+                    name='Register'
+                    component={userRegistration}
                     options={{
                         headerShown: false,
                     }}

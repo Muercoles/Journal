@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
-import ImagePicker, { ImagePickerResponse, MediaType } from 'react-native-image-picker';
 import { Colors } from '../../constants/Colors';
-
-
+import axios from "axios/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from 'expo-image-picker';
 
 const userRegistration = () => {
     const [name, setName] = useState('');
@@ -13,31 +13,44 @@ const userRegistration = () => {
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
     const [image, setImage] = useState('');
+    const [password, setPassword] = useState('');
+    const onPressRegister = async () => {
+        try {
+            const response = await axios.post(`http://192.168.31.88:8000/api/register`, {
+                email: email,
+                password: password,
+                name: name,
+                surname: surname,
+                birthday: birthday,
+                classroom: classroom,
+                phone: phone,
+                image: image
+            });
+            console.log('response', response.data);
+            const auth = response.data.authorisation;
+            await AsyncStorage.setItem('jwtToken', auth.token);
+            // navigation.navigate('BottomTabNav');
+        } catch (error: any) {
+            console.log('error',error.response.data);
+            alert("An error has occurred");
+        }
+    };
 
-    const openImagePicker = () => {
-        const options = {
-            mediaType: 'photo' as MediaType,
-            includeBase64: false,
-            maxHeight: 2000,
-            maxWidth: 2000,
-        };
-
-        ImagePicker.launchImageLibrary(options, (response: ImagePickerResponse) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.errorCode) {
-                console.log('Image picker error: ', response.errorMessage);
-            } else {
-                let imageUri = response.assets?.[0]?.uri;
-                setImage(imageUri || '');
-            }
+    const openImagePicker = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
     };
 
-    const handleSubmit = () => {
-        const formData = { name, surname, birthday, classroom, phone, email, image };
-        console.log(formData);
-    };
 
     return (
         <View style={styles.container}>
@@ -71,6 +84,13 @@ const userRegistration = () => {
         value={phone}
         onChangeText={setPhone}
       />
+     <TextInput
+                placeholder="Password"
+                style={styles.input}
+                value={password}
+                secureTextEntry={true}
+                onChangeText={setPassword}
+     />
       <TextInput
         placeholder="E-mail"
         style={styles.input}
@@ -81,7 +101,7 @@ const userRegistration = () => {
                 <Text style={styles.choosePhotoText}>Choose photo from galery</Text>
             </TouchableOpacity>
             {image ? <Image source={{ uri: image }} style={styles.image} /> : null}
-            <Button title="Register" onPress={handleSubmit} />
+            <Button title="Register" onPress={onPressRegister} />
         </View>
     );
 }
