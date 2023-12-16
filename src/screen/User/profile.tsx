@@ -11,6 +11,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             const userDataStorage = await AsyncStorage.getItem('userData');
+            console.log('uu',userDataStorage);
             if (userDataStorage !== null) {
                 const userData = JSON.parse(userDataStorage) as UserData;
                 setUserData(userData);

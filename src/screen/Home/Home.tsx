@@ -30,7 +30,8 @@ export const Home = () => {
                     </View>
                 </View>
                     <View style={styles.bottomContainer}>
-                            <Plant />
+                        <></>
+                            {/*<Plant />*/}
                             <BookShel />
                     </View>
             </LinearGradient>
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
     },
 });
