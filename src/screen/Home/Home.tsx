@@ -18,16 +18,7 @@ export const Home = () => {
                         lorem ipsum{'\n'}
                         ipsum lorem lorem
                     </Text>
-                    <View style={{marginTop: 23}}>
-                        <Button
-                            title="See profile"
-                            color={Colors.main}
-                        />
-                        <Button
-                            title="See setings"
-                            color={Colors.main}
-                        />
-                    </View>
+
                 </View>
                     <View style={styles.bottomContainer}>
                         <></>

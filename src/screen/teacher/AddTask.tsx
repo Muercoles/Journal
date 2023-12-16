@@ -32,10 +32,12 @@ export const AddTask = () => {
     }, []);
     const onPressAdd = async () => {
         try {
-            const response = await axios.post(`http://192.168.31.88:8000/api/login`, {
+            const response = await axios.post(`http://192.168.31.88:8000/api/createTask`, {
                 name: name,
-                description: description
+                description: description,
+                user_id: selectedUser
             });
+            console.log(response.data);
             // navigation.navigate('BottomTabNav');
         } catch (error: any) {
             console.log('error',error.response.data);
@@ -99,7 +101,6 @@ export const AddTask = () => {
                                     placeholder='  Enter your description'
                                     placeholderTextColor= {Colors.white}
                                     style={styles.input}
-                                    secureTextEntry={true}
                                     value={description}
                                     onChangeText={(description) => setDescription(description)}
                                 />

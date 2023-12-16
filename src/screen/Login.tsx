@@ -17,6 +17,7 @@ export interface UserData {
     image: string;
     name: string;
     phone: string;
+    role: string;
     surname: string;
     updated_at: string;
 }
@@ -43,13 +44,36 @@ export const Login = () => {
                 email: email,
                 password: password
             });
+            console.log(response.data);
             const userData = response.data.user as UserData;
             setUserData(userData);
             const auth = response.data.authorisation;
-            await AsyncStorage.setItem('jwtToken', auth.token);
-            await AsyncStorage.setItem('userData', response.data.user);
+            const userDataString = JSON.stringify(response.data.user);
 
-            // navigation.navigate('BottomTabNav');
+            await AsyncStorage.setItem('jwtToken', auth.token);
+            await AsyncStorage.setItem('userData', userDataString);
+            if(userData.role == "admin")
+            {
+                navigation.reset({
+                    // @ts-ignore
+                    routes: [{ name: 'Register' }],
+                });
+            }
+            else if(userData.role == "teacher")
+            {
+                navigation.reset({
+                    // @ts-ignore
+                    routes: [{ name: 'AddTask' }],
+                });
+            }
+            else
+            {
+                navigation.reset({
+                    // @ts-ignore
+                    routes: [{ name: 'BottomTabNav' }],
+                });
+            }
+
         } catch (error: any) {
             console.log('error',error.response.data);
             alert("An error has occurred");

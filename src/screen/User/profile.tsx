@@ -37,23 +37,20 @@ const Profile = () => {
 
             <TouchableOpacity onPress={handleEditImage}>
             <Image
-                source={{ uri: 'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG98ZW58MHx8MHx8fDA%3D' }}
+                source={{ uri: userData?.image }}
                 style={styles.profileImage}
             />
             </TouchableOpacity>
 
 
-
-
             <View style={styles.userInfo}>
                 <View style={styles.leftColumn}>
-                    <TextInput editable={false} style={styles.textInput}>Vasya Pupkin</TextInput>
-                    <TextInput style={styles.textInputActive}>0665598363</TextInput>
+                    <TextInput editable={false} style={styles.textInput}>{userData?.name} {userData?.surname}</TextInput>
+                    <TextInput style={styles.textInputActive}>{userData?.phone}</TextInput>
                 </View>
                 <View style={styles.rightColumn}>
-                    <TextInput style={styles.textInputActive}>qwertyuiop@gmail.com</TextInput>
-                    <TextInput editable={false} style={styles.textInput}>2006.09.10</TextInput>
-                    <TextInput style={styles.textInputActive}>ul. Veteranow 22</TextInput>
+                    <TextInput style={styles.textInputActive}>{userData?.email}</TextInput>
+                    <TextInput editable={false} style={styles.textInput}>{userData?.birthday}</TextInput>
                 </View>
 
             </View>

@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from "./src/screen/Login";
 import BottomTabNav from './src/navigations/BottomTabNav';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Home} from "./src/screen/Home/Home";
-import Profile from "./src/screen/User/profile";
-import {AddTask} from "./src/screen/teacher/AddTast";
+import {AddTask} from "./src/screen/teacher/AddTask";
+import UserRegister from "./src/screen/Admin/userRegister";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +14,7 @@ export default function App() {
 
     useEffect(() => {
         loadToken();
-        console.log('token',storedToken);
+        console.log('token', storedToken);
     }, []);
 
     const loadToken = async () => {
@@ -31,24 +30,35 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='BottomTabNav'>
-                {storedToken.length === 0  ? (
+            <Stack.Navigator initialRouteName='Login'>
                 <Stack.Screen
-                    name='Task'
+                    name='Login'
+                    component={Login}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name='BottomTabNav'
+                    component={BottomTabNav}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name='Register'
+                    component={UserRegister}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Stack.Screen
+                    name='AddTask'
                     component={AddTask}
                     options={{
                         headerShown: false,
                     }}
                 />
-                ) : (
-                    <Stack.Screen
-                        name='BottomTabNav'
-                        component={BottomTabNav}
-                        options={{
-                            headerShown: false,
-                        }}
-                    />
-                )}
             </Stack.Navigator>
         </NavigationContainer>
     );
